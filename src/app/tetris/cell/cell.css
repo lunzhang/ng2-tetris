@@ -1,0 +1,12 @@
+.cell{
+  box-sizing:border-box;
+  border:1px solid #520202;
+  margin:1px;
+  float:left;
+  width:23px;
+  height:23px;
+}
+
+.o-piece{
+  background-color: #FFEA00;
+}

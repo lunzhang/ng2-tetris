@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component,ViewChild } from '@angular/core';
+import { Board } from './tetris/board/board';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,15 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
+
+  @ViewChild(Board) gameboard:Board;
+
+  constructor(){
+
+  }
+
+  start(){
+    this.gameboard.start();
+  }
+
 }
