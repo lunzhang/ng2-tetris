@@ -29,7 +29,35 @@ export class Board {
   }
 
   start(){
-    console.log('game start');
+    setInterval(()=>{
+      this.updatePiece();
+      this.checkCollision();
+    },1000);
+  }
+
+  updatePiece(){
+    var cells = this.cells.toArray();
+    for(let i = 0;i<this.piece.coordinates.length;i++){
+        cells[this.piece.coordinates[i]].classTypes[this.piece.type] = false;
+    }
+    for(let i = 0;i<this.piece.coordinates.length;i++){
+        this.piece.coordinates[i]+=10;
+    }
+    for(let i = 0;i<this.piece.coordinates.length;i++){
+        cells[this.piece.coordinates[i]].classTypes[this.piece.type] = true;
+    }
+  }
+
+  checkCollision(){
+      for(let i = 0;i<this.piece.coordinates.length;i++){
+        if(this.piece.coordinates[i] >= 190 ){
+            this.restartPiece();
+        }
+      }
+  }
+
+  restartPiece(){
+
   }
 
 }

@@ -7,16 +7,21 @@ import { Component } from '@angular/core';
 })
 export class Cell {
 
+  public filled:boolean = false;
+
+  constructor(){
+
+  }
+
   classTypes={
     'o-piece' : false
   }
 
   fill(type){
     this.classTypes[type] = true;
+    this.filled = true;
   }
 
-  constructor(){
-  
-  }
+
 
 }
