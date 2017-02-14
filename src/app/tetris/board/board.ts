@@ -116,6 +116,12 @@ export class Board {
               clearTimeout(this.timer);
               this.inRestart = true;
               setTimeout(()=>{
+                if(!this.checkCollision()){
+                    this.inRotation = false;
+                    this.inRestart = false;
+                    this.updateGrid();
+                    return;
+                }
                 if(this.checkLoss() && !this.inRotation){
                   this.end();
                   return;
@@ -127,8 +133,10 @@ export class Board {
                 this.updateGrid();
               },300);
             }
+            return true;
         }
       }
+      return false;
   }
 
   //check if rows has been filled
