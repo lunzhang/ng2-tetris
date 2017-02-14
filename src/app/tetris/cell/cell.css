@@ -7,6 +7,30 @@
   height:23px;
 }
 
+.i-piece{
+    background-color:cyan;
+}
+
+.j-piece{
+  background-color:blue;
+}
+
+.l-piece{
+  background-color:orange;
+}
+
 .o-piece{
-  background-color: #FFEA00;
+  background-color:yellow;
+}
+
+.s-piece{
+  background-color:lime;
+}
+
+.t-piece{
+  background-color:purple;
+}
+
+.z-piece{
+  background-color:red;
 }

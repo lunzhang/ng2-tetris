@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,Input } from '@angular/core';
 
 @Component({
   selector: 'cell',
@@ -7,14 +7,19 @@ import { Component } from '@angular/core';
 })
 export class Cell {
 
+  @Input() index;
   public filled:boolean = false;
 
-  constructor(){
-
-  }
+  constructor(){}
 
   classTypes={
-    'o-piece' : false
+    'i-piece':false,
+    'j-piece':false,
+    'l-piece':false,
+    'o-piece' : false,
+    's-piece':false,
+    't-piece':false,
+    'z-piece':false
   }
 
   fill(type){
@@ -22,6 +27,11 @@ export class Cell {
     this.filled = true;
   }
 
-
+  unfill(){
+    for(var type in this.classTypes){
+      this.classTypes[type] = false;
+    }
+    this.filled = false;
+  }
 
 }
