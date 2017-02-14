@@ -15,6 +15,7 @@ export class Board {
   public grid = [];
   public width = 10;
   public height = 20;
+  public gameSpeed = 300;
   public piece = new Piece();
   public gameInProgress = false;
   public inRestart = false;
@@ -47,6 +48,7 @@ export class Board {
     this.gameInProgress = false;
     this.inRotation = false;
     this.inRestart = false;
+    this.gameSpeed = 300;
     this.cells.forEach((elem)=>{
       elem.unfill();
     });
@@ -69,7 +71,7 @@ export class Board {
     if(this.gameInProgress){
       this.timer = setTimeout(()=>{
         this.updateGrid();
-      },200);
+      },this.gameSpeed);
       this.updatePiece(10);
     }
   }
@@ -159,6 +161,7 @@ export class Board {
               cells[j].unfill();
             }
         }
+        this.gameSpeed = this.gameSpeed > 200 ? this.gameSpeed-- : 200;
       }
       this.score += filledRows.length * 100;
       this.onScore.emit(this.score);

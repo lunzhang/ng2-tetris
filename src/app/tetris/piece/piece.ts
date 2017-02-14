@@ -30,7 +30,7 @@ export class Piece {
   resets rotationCount
   **/
   restart(){
-    var shape = 0 //Math.floor(Math.random()*7);
+    var shape = Math.floor(Math.random()*7);
     this.coordinates = this.defaultCords[shape].slice();
     this.type = this.defaultTypes[shape];
     this.rotation = this.defaultRotations[shape];
