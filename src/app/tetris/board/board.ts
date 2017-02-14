@@ -1,4 +1,4 @@
-import { Component,ViewChildren,QueryList,HostListener } from '@angular/core';
+import { Component,ViewChildren,QueryList,HostListener,Output,EventEmitter } from '@angular/core';
 import { Cell } from '../cell/cell';
 import { Piece } from '../piece/piece';
 
@@ -11,6 +11,7 @@ export class Board {
 
   @ViewChildren(Cell) cells:QueryList<Cell>;
 
+  public score = 0;
   public grid = [];
   public width = 10;
   public height = 20;
@@ -20,6 +21,9 @@ export class Board {
   public inRotation = false;
   public timer;
 
+  @Output() onScore = new EventEmitter<number>();
+
+  //creates cells in grid
   initCells(){
       var area = this.width * this.height;
       for(let i = 0;i<area;i++){
@@ -49,9 +53,10 @@ export class Board {
     this.piece.restart();
   }
 
+  //check if cells 3 to 6 are filled
   checkLoss(){
     var cells = this.cells.toArray();
-    for(let i = 0;i<9;i++){
+    for(let i = 3;i<=6;i++){
       if(cells[i].filled){
         return true;
       }
@@ -59,15 +64,17 @@ export class Board {
     return false;
   }
 
+  //self calling function with timer to update piece
   updateGrid(){
     if(this.gameInProgress){
       this.timer = setTimeout(()=>{
         this.updateGrid();
-      },500);
+      },200);
       this.updatePiece(10);
     }
   }
 
+  //moves piece by input amount
   updatePiece(amount){
     var cells = this.cells.toArray();
     this.unfillPiece(cells);
@@ -78,27 +85,32 @@ export class Board {
     this.checkCollision();
   }
 
+  //unfills cells of current piece
   unfillPiece(cells){
     for(let i = 0;i<this.piece.coordinates.length;i++){
       if(this.piece.coordinates[i] > -1)cells[this.piece.coordinates[i]].unfill();
     }
   }
 
+  //fills cells of current piece
   fillPiece(cells){
     for(let i = 0;i<this.piece.coordinates.length;i++){
         if(this.piece.coordinates[i] > -1)cells[this.piece.coordinates[i]].fill(this.piece.type);
     }
   }
 
+  //checks for collision
   checkCollision(){
       for(let i = 0;i<this.piece.coordinates.length;i++){
-        if(this.piece.coordinates[i] < 0) break;
+        if(this.piece.coordinates[i] < 0) break; //skip if piece is invisible
         var cell = this.cells.find((element,index,array)=>{
           return index == this.piece.coordinates[i]+10;
         });
+        //piece is bottom or touchs filled cell
         if(this.piece.coordinates[i] >= 190 || (cell.filled
           && this.piece.coordinates.indexOf(cell.index) == -1 ) ){
             if(!this.inRestart){
+              //clear timer and set restart state
               clearTimeout(this.timer);
               this.inRestart = true;
               setTimeout(()=>{
@@ -108,6 +120,7 @@ export class Board {
                 }
                 this.inRotation = false;
                 this.inRestart = false;
+                this.checkScoring();
                 this.piece.restart();
                 this.updateGrid();
               },300);
@@ -116,14 +129,54 @@ export class Board {
       }
   }
 
+  //check if rows has been filled
+  checkScoring(){
+      var filledRows = [];
+      var cells = this.cells.toArray();
+      //gets filled rows
+      for(let i = 0;i<this.piece.coordinates.length;i++){
+          var rowNum = Math.floor(this.piece.coordinates[i]/10) * 10;
+          var filled = true;
+          for(let i = 0;i<=9;i++){
+            if(!cells[rowNum+i].filled){
+              filled = false;
+              break;
+            }
+          }
+          if(filled && filledRows.indexOf(rowNum) == -1) filledRows.push(rowNum);
+      }
+
+      for(let i = 0;i<filledRows.length;i++){
+        //unfills row
+        for(let j = 0;j<=9;j++){
+          cells[filledRows[i]+j].unfill();
+        }
+
+        //lowers cells above filled row
+        for(let j = filledRows[i]-1;j>=0;j--){
+            if(cells[j].filled){
+              cells[j+10].fill(cells[j].getType());
+              cells[j].unfill();
+            }
+        }
+      }
+      this.score += filledRows.length * 100;
+      this.onScore.emit(this.score);
+  }
+
+  //rotation of piece
   rotate(){
     if(this.gameInProgress && !this.inRestart && !this.inRotation) {
-      this.inRotation = true;
+      this.inRotation = true; //sets rotation state
       setTimeout(()=>{
         this.inRotation = false;
       },100);
       var cells = this.cells.toArray();
       var newCords = this.piece.rotate();
+      /**validates new coordinates
+        if newCords exists, if newCords doesn't end up on other side of grid
+        if newCords isn't filled
+      **/
       for(let i = 0;i<newCords.length;i++){
         if(cells[newCords[i]] == undefined || Math.abs((newCords[i]%10) - (this.piece.coordinates[i]%10)) > 6 ||
           (cells[newCords[i]].filled && this.piece.coordinates.indexOf(newCords[i]) == -1) ) return false;
@@ -148,6 +201,7 @@ export class Board {
     if(this.gameInProgress && !this.inRestart)this.updatePiece(10);
   }
 
+  //check if piece is at left end of grid
   leftEnd(){
     for(let i = 0;i<this.piece.coordinates.length;i++){
       var cell = this.cells.find((element,index,array)=>{
@@ -161,15 +215,18 @@ export class Board {
     return false;
   }
 
+  //check if piece is at right end of grid
   rightEnd(){
     for(let i = 0;i<this.piece.coordinates.length;i++){
       var cell = this.cells.find((element,index,array)=>{
         return index == this.piece.coordinates[i]+1;
       });
+      //right end if visible
       if(this.piece.coordinates[i]%10 == 9 || (cell != undefined && cell.filled)
       && this.piece.coordinates.indexOf(cell.index) == -1 ){
         return true;
       }
+      // right end if invisible
       else if(this.piece.coordinates[i] < 0 && Math.abs(this.piece.coordinates[i])%10 == 1) return true;
     }
     return false;

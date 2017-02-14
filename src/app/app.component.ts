@@ -1,4 +1,4 @@
-import { Component,ViewChild,HostListener } from '@angular/core';
+import { Component,ViewChild,HostListener} from '@angular/core';
 import { Board } from './tetris/board/board';
 
 @Component({
@@ -6,11 +6,10 @@ import { Board } from './tetris/board/board';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent{
 
   @ViewChild(Board) gameboard:Board;
-
-  constructor(){}
+  public score = 0;
 
   start(){
     this.gameboard.start();
@@ -23,6 +22,10 @@ export class AppComponent {
   restart(){
     this.gameboard.end();
     this.gameboard.start();
+  }
+
+  onScore(score:number){
+    this.score = score;
   }
 
   @HostListener('window:keydown',['$event'])

@@ -16,17 +16,19 @@ export class Cell {
     'i-piece':false,
     'j-piece':false,
     'l-piece':false,
-    'o-piece' : false,
+    'o-piece':false,
     's-piece':false,
     't-piece':false,
     'z-piece':false
   }
 
+  //fills in cell
   fill(type){
     this.classTypes[type] = true;
     this.filled = true;
   }
 
+  //unfills cell
   unfill(){
     for(var type in this.classTypes){
       this.classTypes[type] = false;
@@ -34,4 +36,9 @@ export class Cell {
     this.filled = false;
   }
 
+  getType(){
+    for(var prop in this.classTypes){
+      if(this.classTypes[prop]) return prop;
+    }
+  }
 }
