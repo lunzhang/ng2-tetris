@@ -10,12 +10,12 @@ export class Piece {
   public rotationCount;
   public nextPiece:any={};
   public nextPieceCords = [[4,5,6,7], //i-piece
-  [5,6,7,11], //j-piece
-  [7,6,5,9], //l-piece
+  [4,5,6,10], //j-piece
+  [6,5,4,8], //l-piece
   [5,6,9,10], //o-piece
-  [7,6,10,9], //s-piece
-  [7,6,5,10], //t-piece
-  [5,6,10,11]]; //z-piece
+  [6,5,9,8], //s-piece
+  [4,5,6,9], //t-piece
+  [4,5,9,10]]; //z-piece
 
   private defaultRotations = [[[2,11,20,29],[-2,-11,-20,-29]], //i-piece
   [[-9,0,9,-2],[11,0,-11,-20],[9,0,-9,2],[-11,0,11,20]], //j-piece
@@ -67,6 +67,11 @@ export class Piece {
     this.nextPiece.coordinates = this.nextPieceCords[shape];
     this.nextPiece.type = this.defaultTypes[shape];
     this.nextPiece.shape = shape;
+    this.nextPieceSource.next(this.nextPiece);
+  }
+
+  clearNextPiece(){
+    this.nextPiece = {};
     this.nextPieceSource.next(this.nextPiece);
   }
 

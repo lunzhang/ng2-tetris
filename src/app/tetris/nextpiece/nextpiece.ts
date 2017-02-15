@@ -28,6 +28,7 @@ export class NextPiece {
   }
 
   setNextPiece(){
+    if(!this.nextPiece || !this.nextPiece.coordinates) return;
     var cells = this.cells.toArray();
     for(let i = 0;i<this.nextPiece.coordinates.length;i++){
       cells[this.nextPiece.coordinates[i]].fill(this.nextPiece.type);
@@ -35,7 +36,7 @@ export class NextPiece {
   }
 
   unsetNextPiece(){
-    if(!this.nextPiece) return;
+    if(!this.nextPiece || !this.nextPiece.coordinates) return;
     var cells = this.cells.toArray();
     for(let i = 0;i<this.nextPiece.coordinates.length;i++){
       cells[this.nextPiece.coordinates[i]].unfill();

@@ -49,6 +49,7 @@ export class Board {
     this.inRotation = false;
     this.inRestart = false;
     this.gameSpeed = 300;
+    this.piece.clearNextPiece();
     this.cells.forEach((elem)=>{
       elem.unfill();
     });

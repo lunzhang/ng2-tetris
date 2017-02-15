@@ -1,4 +1,5 @@
 # Ng2Tetris
+Live Demo [Ng2Tetris](https://lunzhang.github.io/ng2-tetris/)
 
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.24.
 

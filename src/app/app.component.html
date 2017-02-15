@@ -1,28 +1,41 @@
-<div>
-
-  <div>
-    <button (click)="start()" class="btn">
-      Start
-    </button>
-    <button (click)="end()" class="btn">
-      End
-    </button>
-    <button (click)="restart()" class="btn">
-      Restart
-    </button>
-  </div>
-
-  <div>
-    <div class="board-wrapper">
-      <h3>Score : {{score}} </h3>
-      <board (onScore)="onScore($event)"></board>
+<div id="app" class="container">
+  <div class="row">
+    <div class="col-sm-4 text-right">
+      <button (click)="start()" class="btn" style="background-color:#4CAF50;">
+        Start
+      </button>
     </div>
-    
-    <div class="next-piece-wrapper">
-      <h3>Next Piece </h3>
-      <next-piece></next-piece>
+    <div class="col-sm-4 text-center">
+      <button (click)="end()" class="btn" style="background-color:#D32F2F;">
+        End
+      </button>
     </div>
-
+    <div class="col-sm-4 text-left">
+      <button (click)="restart()" class="btn" style="background-color:#03A9F4;">
+        Restart
+      </button>
+    </div>
   </div>
-
+  <div class="row">
+    <div class="col-sm-4 text-right">
+      <div class="instructions-wrapper">
+        <h3>W - rotate </h3>
+        <h3>A - left </h3>
+        <h3>D - right </h3>
+        <h3>S - down </h3>
+      </div>
+    </div>
+    <div class="col-sm-4 text-center">
+      <div class="board-wrapper">
+        <h3>Score : {{score}} </h3>
+        <board (onScore)="onScore($event)"></board>
+      </div>
+    </div>
+    <div class="col-sm-4 text-left">
+      <div class="next-piece-wrapper">
+        <h3>Next Piece </h3>
+        <next-piece></next-piece>
+      </div>
+    </div>
+  </div>
 </div>
