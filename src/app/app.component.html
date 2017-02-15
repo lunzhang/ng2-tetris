@@ -13,10 +13,16 @@
   </div>
 
   <div>
-    Score : {{score}}
-    <board (onScore)="onScore($event)">
+    <div class="board-wrapper">
+      <h3>Score : {{score}} </h3>
+      <board (onScore)="onScore($event)"></board>
+    </div>
+    
+    <div class="next-piece-wrapper">
+      <h3>Next Piece </h3>
+      <next-piece></next-piece>
+    </div>
 
-    </board>
   </div>
 
 </div>

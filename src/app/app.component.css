@@ -7,3 +7,11 @@
   border-radius:5px;
   border-color:black;
 }
+
+.board-wrapper{
+  display:inline-block;
+}
+.next-piece-wrapper{
+  padding-left:25px;
+  display:inline-block;
+}

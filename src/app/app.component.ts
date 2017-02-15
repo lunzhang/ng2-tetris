@@ -1,5 +1,6 @@
 import { Component,ViewChild,HostListener} from '@angular/core';
 import { Board } from './tetris/board/board';
+import { NextPiece } from './tetris/nextpiece/nextpiece';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +10,8 @@ import { Board } from './tetris/board/board';
 export class AppComponent{
 
   @ViewChild(Board) gameboard:Board;
+  @ViewChild(NextPiece) nextPiece:NextPiece;
+  
   public score = 0;
 
   start(){

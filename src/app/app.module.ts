@@ -5,18 +5,19 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { Board } from './tetris/board/board';
 import { Cell } from './tetris/cell/cell';
-
+import { NextPiece } from './tetris/nextpiece/nextpiece';
+import { Piece } from './tetris/piece/piece';
 
 @NgModule({
   declarations: [
-    AppComponent,Board,Cell
+    AppComponent,Board,Cell,NextPiece
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule
   ],
-  providers: [],
+  providers: [Piece],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -16,7 +16,6 @@ export class Board {
   public width = 10;
   public height = 20;
   public gameSpeed = 300;
-  public piece = new Piece();
   public gameInProgress = false;
   public inRestart = false;
   public inRotation = false;
@@ -32,13 +31,14 @@ export class Board {
       }
   }
 
-  constructor(){
+  constructor(private piece: Piece){
     this.initCells();
   }
 
   start(){
     if(!this.gameInProgress){
       this.gameInProgress = true;
+      this.piece.restart();
       this.updateGrid();
     }
   }
@@ -52,7 +52,6 @@ export class Board {
     this.cells.forEach((elem)=>{
       elem.unfill();
     });
-    this.piece.restart();
   }
 
   //check if cells 3 to 6 are filled
@@ -129,7 +128,7 @@ export class Board {
                 this.inRotation = false;
                 this.inRestart = false;
                 this.checkScoring();
-                this.piece.restart();
+                this.piece.replace();
                 this.updateGrid();
               },300);
             }

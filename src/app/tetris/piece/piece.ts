@@ -1,9 +1,21 @@
+import { Injectable } from '@angular/core';
+import { Subject }    from 'rxjs/Subject';
+
+@Injectable()
 export class Piece {
 
   public coordinates;
   public type;
   public rotation;
   public rotationCount;
+  public nextPiece:any={};
+  public nextPieceCords = [[4,5,6,7], //i-piece
+  [5,6,7,11], //j-piece
+  [7,6,5,9], //l-piece
+  [5,6,9,10], //o-piece
+  [7,6,10,9], //s-piece
+  [7,6,5,10], //t-piece
+  [5,6,10,11]]; //z-piece
 
   private defaultRotations = [[[2,11,20,29],[-2,-11,-20,-29]], //i-piece
   [[-9,0,9,-2],[11,0,-11,-20],[9,0,-9,2],[-11,0,11,20]], //j-piece
@@ -21,20 +33,41 @@ export class Piece {
   [-6,-5,-4,5], //t-piece
   [-6,-5,5,6]]; //z-piece
 
-  constructor(){
-      this.restart();
+  private nextPieceSource = new Subject();
+  nextPiece$ = this.nextPieceSource.asObservable();
+
+  /** assigns a new nextPiece
+  assigns piece
+  assigns new nextPiece
+  **/
+  public restart(){
+      this.setNextPiece();
+      this.setPiece();
+      this.setNextPiece();
   }
 
-  /** assigns a new shape to piece
-  reassigns coordinates,shapes,rotation
-  resets rotationCount
-  **/
-  restart(){
-    var shape = Math.floor(Math.random()*7);
+  //sets current piece to next and sets new next
+  replace(){
+    this.setPiece();
+    this.setNextPiece();
+  }
+
+  //sets current piece
+  setPiece(){
+    var shape = this.nextPiece.shape;
     this.coordinates = this.defaultCords[shape].slice();
     this.type = this.defaultTypes[shape];
     this.rotation = this.defaultRotations[shape];
     this.rotationCount = 0;
+  }
+
+  //sets next piece
+  setNextPiece(){
+    var shape = Math.floor(Math.random()*7);
+    this.nextPiece.coordinates = this.nextPieceCords[shape];
+    this.nextPiece.type = this.defaultTypes[shape];
+    this.nextPiece.shape = shape;
+    this.nextPieceSource.next(this.nextPiece);
   }
 
   /** rotates piece
