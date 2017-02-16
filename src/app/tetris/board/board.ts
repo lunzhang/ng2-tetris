@@ -68,7 +68,7 @@ export class Board {
 
   //self calling function with timer to update piece
   updateGrid(){
-    if(this.gameInProgress){
+    if(this.gameInProgress && !this.inRestart){
       this.timer = setTimeout(()=>{
         this.updateGrid();
       },this.gameSpeed);
@@ -180,7 +180,7 @@ export class Board {
         }
       }
 
-      this.gameSpeed = this.gameSpeed > 150 ? this.gameSpeed-- : 150;
+      this.gameSpeed = this.gameSpeed > 100 ? this.gameSpeed-- : 100;
       this.score += filledRows.length * filledRows.length;
       this.onScore.emit(this.score);
   }
