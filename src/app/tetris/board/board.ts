@@ -126,9 +126,9 @@ export class Board {
                   this.end();
                   return;
                 }
+                this.checkScoring();
                 this.inRotation = false;
                 this.inRestart = false;
-                this.checkScoring();
                 this.piece.replace();
                 this.updateGrid();
               },300);
@@ -156,23 +156,37 @@ export class Board {
           if(filled && filledRows.indexOf(rowNum) == -1) filledRows.push(rowNum);
       }
 
+      //sort rows from lowest to greatest
+      filledRows.sort(this.sortNumber);
+
       for(let i = 0;i<filledRows.length;i++){
         //unfills row
         for(let j = 0;j<=9;j++){
           cells[filledRows[i]+j].unfill();
         }
 
-        //lowers cells above filled row
+        var hasFilled = false;
+        //lowers cells above top filled row
         for(let j = filledRows[i]-1;j>=0;j--){
-            if(cells[j].filled){
-              cells[j+10].fill(cells[j].getType());
-              cells[j].unfill();
-            }
+          if(j%10==0){
+            if(!hasFilled) break;
+            hasFilled = false;
+          }
+          if(cells[j].filled){
+            cells[j+10].fill(cells[j].getType());
+            cells[j].unfill();
+            hasFilled = true;
+          }
         }
-        this.gameSpeed = this.gameSpeed > 200 ? this.gameSpeed-- : 200;
       }
-      this.score += filledRows.length * 100;
+
+      this.gameSpeed = this.gameSpeed > 150 ? this.gameSpeed-- : 150;
+      this.score += filledRows.length * filledRows.length;
       this.onScore.emit(this.score);
+  }
+
+  sortNumber(a,b){
+    return a-b;
   }
 
   //rotation of piece

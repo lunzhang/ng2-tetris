@@ -33,3 +33,23 @@ h3{
 #app{
   padding-top:25px;
 }
+@media (max-width: 768px) {
+  .btn{
+    width:100%;
+  }
+  .button-row .col-sm-4{
+    text-align: center;
+    padding: 10px
+  }
+}
+@media (min-width: 769px) {
+  .text-right-sm{
+      text-align: right;
+  }
+  .text-center-sm{
+    text-align: center;
+  }
+  .text-left-sm{
+    text-align: left;
+  }
+}
